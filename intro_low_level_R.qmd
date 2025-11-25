@@ -1,0 +1,295 @@
+---
+title: "intro_low_level_r"
+format: html
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this 
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+## Types and classes
+### Types
+```{r}
+typeof(1.5)
+typeof("toto")
+typeof('also between single quotes')
+typeof(TRUE)
+typeof(1L)
+typeof(1)
+typeof(typeof)
+typeof(list())
+```
+
+### Classes
+
+```{r}
+data(iris)
+typeof(iris)
+class(iris)
+```
+
+## Vectors
+### Introduction
+Many things in R are vectors (and most of the other things are lists).
+
+A vector is a collection of values of the same type (possibly a single value).
+
+```{r}
+x <- 15.25
+length(x) ## all vectors have a length
+x[1]
+```
+
+```{r}
+length(length(x))
+typeof(length(x))
+```
+
+The `c` function can be seen as a creation function or, more accurately, as a
+vector concatenation function. 
+
+```{r}
+y <- c(1, -2, 45, 1.5, -1e-5)
+y
+typeof(y)
+y[2]
+length(y)
+```
+
+```{r}
+c(x, y)
+```
+
+### Character vectors
+
+This is not R strength...
+
+```{r}
+z <- "Alice"
+length(z)
+```
+
+Salvation comes from the `stringr` package. 
+
+```{r}
+library(stringr)
+```
+
+```{r}
+str_length(z)
+```
+
+```{r}
+complicated <- "😵 😡 😠 🤬 R是一门很好的编程语言 هي لغة برمجة رائعة"
+complicated
+length(complicated)
+str_length(complicated)
+```
+
+```{r}
+some_values <- c("😵 😡 😠 🤬", "R是一门很好的编程语言", "alice")
+some_values
+length(some_values)
+str_length(some_values)
+str_to_upper(some_values)
+```
+
+### Indexing
+
+```{r}
+x <- c(6, 5, 1, 2, 3, 4)
+x[3]
+```
+
+```{r}
+x[4] <- 15
+x
+```
+
+Assignment can be understood has a value semantic assignment: `x` and `y` are
+different vectors with the same initial content.
+
+```{r}
+y <- x
+y
+```
+
+Therefore, modifying `x` has no effect on `y`.
+
+```{r}
+x[1] <- 18
+x
+y
+```
+
+Indexing is made with vectors of any length.
+
+```{r}
+x
+x[c(2, 2, 1, 4, 3)]
+```
+
+```{r}
+x[0] ## no possible meaning -> empty numeric vector
+x[7] ## no value there -> not available
+x[10]
+```
+
+```{r}
+typeof(numeric(0))
+length(numeric(0))
+```
+
+```{r}
+typeof(NA)
+length(NA)
+```
+
+```{r}
+typeof(NA_integer_)
+NA_integer_
+```
+
+```{r}
+x
+x[c(4, 1, 0, 15)]
+```
+
+```{r}
+c(numeric(0), 5, numeric(0))
+```
+
+```{r}
+x
+x[c(-1, -4, -12)]
+```
+
+
+```{r}
+x
+x[c(1, 4)] <- c(-34, 42)
+x
+x[c(2, 10)] <- c(123, 78)
+x
+```
+
+```{r}
+y <- c("A", "B", "C")
+y
+y[c(TRUE, FALSE, TRUE)]
+```
+
+## Lists
+
+Vectors must be type uniform, which will trigger a conversion to character in
+many cases. 
+
+```{r}
+broken <- c(1L, 1.5, "toto", FALSE)
+broken
+typeof(broken)
+```
+
+Lists do not have this limitation.
+
+### Creating a list
+
+```{r}
+bar <- list(1L, 1.5, "toto", FALSE)
+bar
+```
+
+```{r}
+typeof(bar)
+length(bar)
+```
+
+A list can be understood as a vector of "vectors". 
+
+```{r}
+foo <- list(c(1, 2, 3), TRUE, length)
+foo
+length(foo)
+```
+
+### Indexing
+
+```{r}
+foo
+cat("###\n")
+foo[1]
+cat("###\n")
+foo[-2]
+cat("###\n")
+foo[c(3, 2, 2, 1)]
+```
+```{r}
+foo[0]
+foo[4]
+```
+
+### Side step: weird values
+```{r}
+NA ## missing value
+NULL ## missing object
+NaN ## Not a number
+```
+
+```{r}
+0/0
+1/0
+-1/0
+1/0 - 1/0
+1/0 + 1
+1/0 - 10e10
+1/Inf
+```
+
+```{r}
+NA_real_ + 1
+1/NA_real_
+```
+
+```{r}
+NULL + 1
+```
+
+### Back to indexing lists
+```{r}
+x <- list(c(1,2,3), c(TRUE, FALSE), LETTERS[10:15])
+x
+```
+
+```{r}
+x[c(1,4,5)]
+```
+```{r}
+x[5] <- list(c(-2, 1))
+x
+```
+
+```{r}
+y <- c(1, 2, 3)
+y
+y[4] <- "toto"
+y
+```
+
+
